@@ -290,3 +290,109 @@
 
 </body>
 </html>
+<script>
+// --- 1. CORE BANKING SYSTEMS ---
+let looseKromer = localStorage.getItem('looseKromer') ? parseInt(localStorage.getItem('looseKromer')) : 0;
+let cardBalance = localStorage.getItem('cardBalance') ? parseInt(localStorage.getItem('cardBalance')) : 0;
+
+// Re-hook the HUD interface elements dynamically using code
+function injectEconomyHUD() {
+    const cabinet = document.querySelector('.arcade-cabinet');
+    if (!cabinet) return;
+
+    // Check if the HUD box already exists, if not, create it
+    if (!document.getElementById('economyHUD')) {
+        const hudHTML = `
+            <div id="economyHUD" style="background: #000; border: 2px dashed #ffff00; padding: 10px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; border-radius: 4px;">
+                <div>
+                    <div style="color: #00ffff; font-size: 0.65rem; letter-spacing: 1px;">[[LOOSE KROMER]]</div>
+                    <div style="color: #00ff00; font-size: 1.2rem; font-weight: bold;" id="looseKromer">0</div>
+                </div>
+                <div>
+                    <div style="color: #00ffff; font-size: 0.65rem; letter-spacing: 1px;">[[CARD BALANCE]]</div>
+                    <div style="color: #ffff00; font-size: 1.2rem; font-weight: bold;" id="cardBalance">$0</div>
+                </div>
+            </div>
+            <button id="mineBtn" style="background: #000; border: 2px solid #00ff00; color: #00ff00; padding: 10px 20px; font-family: monospace; font-size: 1rem; font-weight: bold; cursor: pointer; border-radius: 4px; margin-bottom: 15px; width: 100%;" onclick="mineKromer()">
+                GATHER [[Kromer]]
+            </button>
+        `;
+        // Put the HUD and Gather button at the very top of the arcade screen
+        const menuStage = document.getElementById('menuStage') || document.getElementById('menuScreen');
+        if (menuStage) {
+            menuStage.insertAdjacentHTML('afterbegin', hudHTML);
+        }
+    }
+
+    // Check if the ATM Transfer button already exists inside gameplay screen, if not, create it
+    const gameStage = document.getElementById('gameStage') || document.getElementById('gameScreen');
+    if (gameStage && !document.getElementById('bankBtn')) {
+        const bankButtonHTML = `
+            <button id="bankBtn" style="background: #000; border: 2px solid #ffff00; color: #ffff00; padding: 10px 20px; font-family: monospace; font-size: 1rem; font-weight: bold; cursor: pointer; border-radius: 4px; margin-bottom: 15px; width: 100%;" onclick="saveToCard()">
+                SAVE KROMER TO [[Card]]
+            </button>
+        `;
+        gameStage.insertAdjacentHTML('afterbegin', bankButtonHTML);
+    }
+    
+    updateHUD();
+}
+
+// --- 2. GAME LOGIC UTILITIES ---
+function mineKromer() {
+    let mined = Math.floor(Math.random() * 15) + 5;
+    looseKromer += mined;
+    localStorage.setItem('looseKromer', looseKromer);
+    updateHUD();
+}
+
+function saveToCard() {
+    if (looseKromer <= 0) {
+        alert("YOUR POCKETS ARE [[Empty]]! ACTIVE THE MINE FUNCTION TO GATHER [[Kromer]] FIRST!");
+        return;
+    }
+    cardBalance += looseKromer;
+    looseKromer = 0;
+    localStorage.setItem('looseKromer', looseKromer);
+    localStorage.setItem('cardBalance', cardBalance);
+    updateHUD();
+    alert("SUCCESS! [[Kromer]] SECURELY ENCRYPTED INTO PLASTIC ARCHIVE.");
+}
+
+function updateHUD() {
+    const looseEl = document.getElementById('looseKromer');
+    const balanceEl = document.getElementById('cardBalance');
+    if (looseEl) looseEl.innerText = looseKromer;
+    if (balanceEl) balanceEl.innerText = "$" + cardBalance;
+}
+
+// --- 3. DYNAMIC REWRITING OVERRIDE ---
+// This hooks into your original slide function to read card balance levels dynamically
+function insertCard() {
+    const card = document.getElementById('spamtonCard');
+    if (card) card.classList.add('card-swallowed');
+    
+    setTimeout(() => {
+        if (cardBalance <= 0) {
+            alert("...WAIT A SEC. THIS CARD HAS [[$0.00]] Balance?! YOU ARE TRYING TO SCAM THE SALESMAN! GET OUT OF THE SYSTEM!");
+        } else if (cardBalance > 0 && cardBalance < 100) {
+            alert("THANK YOU FOR THE DEPOSIT! YOUR VALUE OF [$" + cardBalance + "] HAS BEEN EXCHANGED FOR POOR QUALITY CAR INSURANCE.");
+        } else if (cardBalance >= 100 && cardBalance < 1000) {
+            alert("HAEAEAEAEAEA!!! NOW THAT'S WHAT I CALL A [$" + cardBalance + "] GENEROSITY!! YOU'RE TURNING INTO A REAL [[Big Shot]]!");
+        } else {
+            alert("🚨 ALARMS BLARING 🚨\n\nUNBELIEVABLE! [$" + cardBalance + "] KROMER DELIVERED DIRECTLY INTO THE DUMPSTER! YOU HAVE BROKEN THE CYBER ECONOMY!!!");
+        }
+        
+        cardBalance = 0;
+        localStorage.setItem('cardBalance', cardBalance);
+        updateHUD();
+        
+        // Return back to main menu
+        if (typeof showStage === "function") showStage('menuStage');
+        else if (typeof changeScreen === "function") changeScreen('menuScreen');
+    }, 550);
+}
+
+// Boot setup automatically once page assets settle
+window.addEventListener('DOMContentLoaded', injectEconomyHUD);
+</script>
