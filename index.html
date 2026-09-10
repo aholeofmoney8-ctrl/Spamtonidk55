@@ -3,49 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[[BIG SHOT]] SYSTEM 1997</title>
+    <title>[[BIG SHOT]] TRACKER 1997</title>
     <style>
-        /* Cyber World Base Styling */
         body {
             background-color: #000000;
             color: #00ff00;
             font-family: 'Courier New', Courier, monospace;
             text-align: center;
-            padding: 30px 10px;
+            padding: 20px 10px;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* CRT Arcade Screen Container */
         .arcade-cabinet {
-            background: #111;
-            border: 6px ridge #333;
-            width: 360px;
+            background: #111111;
+            border: 6px ridge #333333;
+            width: 340px;
             padding: 20px 10px;
             border-radius: 15px;
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
             position: relative;
         }
 
-        /* Glitchy Heading */
-        h1 {
-            color: #ffff00;
-            font-size: 2.2rem;
-            text-shadow: 3px 3px #ff00ff;
-            margin: 0 0 20px 0;
-            line-height: 1.1;
-        }
-
-        /* --- PURE CSS SPAMTON FACE --- */
+        /* --- NEON SPAMTON LOGO ASSET --- */
         .spamton-face {
             width: 140px;
             height: 70px;
-            margin: 10px auto 25px auto;
+            margin: 10px auto 15px auto;
             position: relative;
         }
-        /* Iconic Pink & Yellow Glasses */
         .glass-left {
             background: #ff00ff;
             width: 55px;
@@ -73,20 +61,50 @@
             top: 18px;
         }
 
-        /* --- SCREEN STATES --- */
-        .screen {
-            display: none;
-            min-height: 250px;
+        /* --- THE PERMANENT KROMER COUNTER PANEL --- */
+        .counter-box {
+            background: #000000;
+            border: 2px dashed #ffff00;
+            padding: 8px;
+            width: 280px;
+            margin: 0 auto 20px auto;
+            border-radius: 4px;
         }
-        .screen.active {
-            display: block;
+        .counter-label {
+            color: #00ffff;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin: 0 0 3px 0;
+        }
+        .counter-total {
+            color: #ffff00;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 0 0 8px #ffff00;
         }
 
-        /* --- MAIN MENU OPTIONS --- */
+        /* --- CORE INTERFACE DISPLAY RIG --- */
+        .stage {
+            display: none !important;
+        }
+        .stage.visible {
+            display: block !important;
+        }
+
+        h1 {
+            color: #ffff00;
+            font-size: 2.1rem;
+            text-shadow: 3px 3px #ff00ff;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+        }
+
+        /* --- INTERACTIVE ACTION MENUS --- */
         .menu-list {
             list-style: none;
             padding: 0;
-            margin: 30px 0;
+            margin: 25px 0;
         }
         .menu-item {
             font-size: 1.6rem;
@@ -98,25 +116,20 @@
         }
         .menu-item:hover {
             color: #ffff00;
-            transform: scale(1.1);
+            transform: scale(1.08);
             text-shadow: 0 0 10px #ff00ff;
         }
-        .menu-item::before {
-            content: "[[ ";
-            color: #00ffff;
-        }
-        .menu-item::after {
-            content: " ]]";
-            color: #00ffff;
-        }
+        .menu-item::before { content: "[[ "; color: #00ffff; }
+        .menu-item::after { content: " ]]"; color: #00ffff; }
 
-        /* --- GAME SCREEN (YOUR CARD SLOT) --- */
+        /* --- RECREATION OF YOUR HARDWARE SCHEMATIC --- */
         .outer-panel {
             background-color: #D3D3D3;
-            width: 280px;
-            margin: 0 auto;
+            width: 260px;
+            margin: 20px auto;
             padding: 20px;
             border-radius: 4px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
         }
         .inner-panel {
             background-color: #808080;
@@ -124,15 +137,18 @@
         }
         .card-slot {
             background-color: #000000;
-            width: 180px;
+            width: 170px;
             height: 28px;
             margin: 0 auto;
+            box-shadow: inset 0 0 8px #000000;
         }
+
+        /* --- THE SWIPEABLE PLASTIC CARD --- */
         .card-container {
             width: 100%;
             height: 110px;
             position: relative;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         .credit-card {
             background: linear-gradient(135deg, #ffff00, #ff00ff);
@@ -145,14 +161,15 @@
             left: 50%;
             transform: translateX(-50%);
             bottom: 0;
-            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.6s;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s;
         }
         .card-swallowed {
-            transform: translateX(-50%) translateY(-100px) scale(0.1, 0);
+            transform: translateX(-50%) translateY(-105px) scale(0.1, 0);
             opacity: 0;
         }
 
-        /* UI Navigation Buttons */
+        /* --- TERMINAL CONTROL GEAR --- */
         .back-btn {
             background: none;
             border: 2px solid #ff00ff;
@@ -162,42 +179,40 @@
             cursor: pointer;
             margin-top: 20px;
         }
-        .back-btn:hover {
-            background: #ff00ff;
-            color: #000;
-        }
-
-        /* Settings adjustments */
-        .setting-row {
-            margin: 20px 0;
-            font-size: 1.1rem;
-        }
+        .back-btn:hover { background: #ff00ff; color: #000000; }
+        .setting-row { margin: 18px 0; font-size: 1.1rem; }
     </style>
 </head>
 <body>
 
     <div class="arcade-cabinet">
         
-        <!-- Spamton Glasses Asset -->
+        <!-- Glasses Emblem -->
         <div class="spamton-face">
             <div class="glass-left"></div>
             <div class="glasses-bridge"></div>
             <div class="glass-right"></div>
         </div>
 
-        <!-- 1. MAIN MENU SCREEN -->
-        <div id="menuScreen" class="screen active">
+        <!-- Global Transaction Metrics Panel -->
+        <div class="counter-box">
+            <p class="counter-label">[[TOTAL CARDS ACCEPTE D]]</p>
+            <p class="counter-total" id="cardCounter">000000</p>
+        </div>
+
+        <!-- LAYOUT DISPLAY 1: MAIN ROOT INDEX -->
+        <div id="menuStage" class="stage visible">
             <h1>SPAMTON OS v1.997</h1>
             <ul class="menu-list">
-                <li class="menu-item" onclick="changeScreen('gameScreen')">Play</li>
-                <li class="menu-item" onclick="changeScreen('settingsScreen')">Settings</li>
+                <li class="menu-item" onclick="showStage('gameStage')">Play</li>
+                <li class="menu-item" onclick="showStage('settingsStage')">Settings</li>
                 <li class="menu-item" onclick="exitSystem()">Exit</li>
             </ul>
         </div>
 
-        <!-- 2. GAME PLAY SCREEN (Your Hardware Slot) -->
-        <div id="gameScreen" class="screen">
-            <h1 style="font-size: 1.6rem; color: #00ffff;">[[DEAL OR NO DEAL]]</h1>
+        <!-- LAYOUT DISPLAY 2: TRANSACTION RIG (Your Design) -->
+        <div id="gameStage" class="stage">
+            <h1 style="font-size: 1.5rem; color: #00ffff;">[[DEAL OR NO DEAL]]</h1>
             
             <div class="outer-panel">
                 <div class="inner-panel">
@@ -209,58 +224,65 @@
                 <div class="credit-card" id="spamtonCard" onclick="insertCard()"></div>
             </div>
             
-            <button class="back-btn" onclick="changeScreen('menuScreen')">BACK TO MENU</button>
+            <button class="back-btn" onclick="showStage('menuStage')">BACK TO MENU</button>
         </div>
 
-        <!-- 3. SETTINGS SCREEN -->
-        <div id="settingsScreen" class="screen">
+        <!-- LAYOUT DISPLAY 3: OPTIONS DESK -->
+        <div id="settingsStage" class="stage">
             <h1>[[CONFIGURATION]]</h1>
             <div class="setting-row">
-                <label>AUDIO: </label>
-                <span style="color: #ff00ff;">[HYPERLINK BLOCKED]</span>
+                <label>AUDIO: </label> <span style="color: #ff00ff;">[HYPERLINK BLOCKED]</span>
             </div>
             <div class="setting-row">
-                <label>KROMER RATE: </label>
-                <span style="color: #ffff00;">MAXIMUM</span>
+                <label>KROMER RATE: </label> <span style="color: #ffff00;">MAXIMUM</span>
             </div>
             <div class="setting-row">
-                <label>JEVIL RADAR: </label>
-                <span style="color: #ff0000; font-weight: bold;">DISABLED 🚨</span>
+                <label>JEVIL RADAR: </label> <span style="color: #ff0000; font-weight: bold;">DISABLED 🚨</span>
             </div>
-            <button class="back-btn" onclick="changeScreen('menuScreen')">BACK TO MENU</button>
+            <button class="back-btn" onclick="showStage('menuStage')">BACK TO MENU</button>
         </div>
 
     </div>
 
     <script>
-        // Screen Navigation Engine
-        function changeScreen(screenId) {
-            // Reset card animation if navigating away/back
-            if(screenId === 'gameScreen') {
+        // Internal Tracking Core Memory
+        let swipeCount = localStorage.getItem('spamtonSwipeCount') ? parseInt(localStorage.getItem('spamtonSwipeCount')) : 0;
+        updateCounterDisplay();
+
+        function showStage(stageId) {
+            if(stageId === 'gameStage') {
                 const card = document.getElementById('spamtonCard');
                 card.classList.remove('card-swallowed');
             }
             
-            // Hide all screens
-            document.querySelectorAll('.screen').forEach(s => {
-                s.classList.remove('active');
+            // Clean slate layout clear
+            document.querySelectorAll('.stage').forEach(el => {
+                el.classList.remove('visible');
             });
-            // Show chosen screen
-            document.getElementById(screenId).classList.add('active');
+            
+            document.getElementById(stageId).classList.add('visible');
         }
 
-        // Swallowing Mechanic
         function insertCard() {
             const card = document.getElementById('spamtonCard');
             card.classList.add('card-swallowed');
             
+            // Register metrics sequence
+            swipeCount++;
+            localStorage.setItem('spamtonSwipeCount', swipeCount);
+            
             setTimeout(() => {
+                updateCounterDisplay();
                 alert("THANK YOU FOR THE [[Generous Donation]]!!! YOU ARE NOW FULLY [[Big Shot]] INSURED!");
-                changeScreen('menuScreen');
-            }, 600);
+                showStage('menuStage');
+            }, 550);
         }
 
-        // Exit Script
+        function updateCounterDisplay() {
+            // Padding the number with zeros to maintain retro arcade style
+            document.getElementById('cardCounter').innerText = String(swipeCount).padStart(6, '0');
+        }
+
         function exitSystem() {
             alert("HAEAEAEAEAEA!!! YOU THINK YOU CAN [[Exit]] THE SALES PROGRAM?! THERE IS NO ESCAPE FROM THE DUMPSTER!");
         }
